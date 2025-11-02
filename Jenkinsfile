@@ -7,9 +7,10 @@ pipeline {
     }
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout Repository') {
             steps {
-                git 'https://github.com/anantmishrap001/DEVOPS-LAB-1.git'
+                // Explicitly use the main branch
+                git branch: 'main', url: 'https://github.com/anantmishrap001/DEVOPS-LAB-1.git'
             }
         }
 
@@ -24,7 +25,6 @@ pipeline {
         stage('Stop Old Container') {
             steps {
                 script {
-                    // Stop & remove old container if it exists
                     def exists = sh(script: "docker ps -a -q -f name=${CONTAINER_NAME}", returnStdout: true).trim()
                     if (exists) {
                         sh "docker stop ${CONTAINER_NAME}"
